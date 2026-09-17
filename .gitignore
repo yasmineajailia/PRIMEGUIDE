@@ -1,0 +1,103 @@
+# ==============================================
+# SECRETS & ENVIRONMENT
+# ==============================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ==============================================
+# PYTHON
+# ==============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+MANIFEST
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env/
+
+# ==============================================
+# LARGE DATA / MODEL FILES (too big for GitHub)
+# ==============================================
+embeddings.npy
+faiss_index.idx
+entries.csv
+*.h5
+*.pkl
+*.bin
+*.pt
+*.pth
+*.onnx
+*.safetensors
+
+# ==============================================
+# GENERATED CONTENT (runtime artifacts)
+# ==============================================
+generated_images/
+generated_gifs/
+generated_audio/
+temp_uploads/
+*.mp3
+*.wav
+
+# ==============================================
+# NODE.JS
+# ==============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+package-lock.json
+yarn.lock
+
+# Build output
+public/js/main.js
+
+# ==============================================
+# IDE & EDITORS
+# ==============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ==============================================
+# LOGS
+# ==============================================
+*.log
+logs/
+
+# ==============================================
+# MISC
+# ==============================================
+.cache/
+.pytest_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+coverage.xml

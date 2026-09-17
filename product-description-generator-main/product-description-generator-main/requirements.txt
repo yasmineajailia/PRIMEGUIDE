@@ -1,0 +1,50 @@
+# Core dependencies for the product description generator
+gradio==3.28.0                # Gradio for the UI interface
+langchain==0.0.156            # LangChain for managing chains and prompts
+transformers==4.30.0          # Transformers for T5 and other language models
+torch                         # PyTorch - use compatible version
+torchvision                   # Required for image processing
+torchaudio                    # Often included with PyTorch installations
+diffusers==0.14.0             # For Stable Diffusion image generation
+accelerate==0.18.0            # For optimized inference
+datasets                      # Hugging Face Datasets for data preprocessing
+sentencepiece                 # Required for T5 tokenizer
+pillow                        # For image manipulation
+pandas                        # Pandas for data manipulation
+numpy                         # Required for numerical operations
+imageio                       # Used for GIF creation
+scipy                         # Required by various ML libraries
+scikit-learn                  # For data preprocessing and evaluation
+nltk                          # Natural Language Toolkit for text processing
+tensorboard                   # For monitoring training
+huggingface_hub               # For downloading models from Hugging Face
+protobuf==3.20.0              # Fixed version to avoid compatibility issues
+ftfy                          # Text normalization
+regex                         # Regular expressions for text processing
+tqdm                          # Progress bars
+
+# Friend's project requirements
+google-generativeai           # Google's Generative AI API client
+python-dotenv                 # Environment variable management from .env files
+textstat==0.7.3               # Text statistics and readability metrics
+sentence-transformers         # For creating sentence embeddings
+elevenlabs                    # ElevenLabs voice API for text-to-speech
+ipython                       # Interactive Python shell/notebook support
+
+# Scientific libraries
+matplotlib>=3.4.0
+joblib==1.3.1
+
+# Web UI
+streamlit==1.24.0
+fastapi>=0.103.1              # FastAPI framework for the API
+uvicorn>=0.23.2               # ASGI server for FastAPI
+python-multipart              # For handling file uploads and form data
+pydantic>=2.3.0               # Data validation for API
+
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+matplotlib>=3.4.0
+joblib==1.3.1
+streamlit==1.24.0

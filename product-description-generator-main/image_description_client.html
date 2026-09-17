@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Description Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Description Generator</h1>
+    
+    <div class="container">        <div class="form-group">
+            <label for="imageUpload">Upload Product Image:</label>
+            <input type="file" id="imageUpload" accept="image/*" onchange="previewImage(event)">
+            <div id="imagePreviewContainer"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="endpointSelect">Select Endpoint:</label>
+            <select id="endpointSelect">
+                <option value="/upload-image">Default (/upload-image)</option>
+                <option value="/generate-description-from-image">Alternative (/generate-description-from-image)</option>
+            </select>
+        </div>
+        
+        <button onclick="generateDescription()">Generate Description</button>
+        
+        <div class="loading" id="loadingIndicator">
+            Analyzing image and generating description...
+        </div>
+        
+        <div id="result"></div>
+    </div>
+    
+    <script>
+        // Preview the selected image
+        function previewImage(event) {
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+            imagePreviewContainer.innerHTML = '';
+            
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'image-preview';
+                    imagePreviewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+          // Generate description from the image
+        async function generateDescription() {
+            const fileInput = document.getElementById('imageUpload');
+            const resultDiv = document.getElementById('result');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            if (!fileInput.files.length) {
+                resultDiv.innerHTML = '<p style="color: red;">Please select an image first.</p>';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            try {                
+                loadingIndicator.style.display = 'block';
+                resultDiv.innerHTML = '';
+                
+                // Get the selected endpoint
+                const endpoint = document.getElementById('endpointSelect').value;
+                
+                // Use the selected endpoint
+                const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const description = data.description;
+                    resultDiv.innerHTML = `
+                        <h3>Generated Description:</h3>
+                        <div>${description.replace(/\n/g, '<br>')}</div>
+                    `;
+                    
+                    // After description, try to generate an image for the product
+                    const productName = description.split('\n')[0]?.substring(0, 50) || "Product";
+                    
+                    // Extract keywords from the description (first 10 words after first line)
+                    const keywords = description.split('\n').slice(1).join(' ').split(' ').slice(0, 10).join(' ');
+                    
+                    // Show additional action
+                    resultDiv.innerHTML += `
+                        <h3>Generate Product Image:</h3>
+                        <p>Would you like to generate a product image based on this description?</p>
+                        <button onclick="generateProductImage('${encodeURIComponent(productName)}', '${encodeURIComponent(keywords)}')">Generate Image</button>
+                        <div id="imageResult"></div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<p style="color: red;">Error: ${data.detail || 'Failed to generate description'}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        // Generate product image based on name and keywords
+        async function generateProductImage(encodedProductName, encodedKeywords) {
+            const imageResultDiv = document.getElementById('imageResult');
+            imageResultDiv.innerHTML = '<p>Generating product image, please wait...</p>';
+            
+            const productName = decodeURIComponent(encodedProductName);
+            const keywords = decodeURIComponent(encodedKeywords);
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8000/generate-product-image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        product_name: productName,
+                        keywords: keywords,
+                        image_style: "product",
+                        image_size: "512x512"
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    // Determine which URL to use
+                    const regularImageUrl = `http://127.0.0.1:8000${data.image_url}`;
+                    const staticImageUrl = data.static_image_url ? 
+                        `http://127.0.0.1:8000${data.static_image_url}` : 
+                        `http://127.0.0.1:8000/static${data.image_url}`;
+                    
+                    imageResultDiv.innerHTML = `
+                        <h3>Generated Product Image:</h3>
+                        <div style="margin-top: 15px;">
+                            <div style="margin-bottom: 20px;">
+                                <h4>Regular URL Path:</h4>
+                                <p style="word-break: break-all;"><small>${regularImageUrl}</small></p>
+                                <img src="${regularImageUrl}" alt="Generated Product Image" 
+                                     style="max-width: 100%; border: 1px solid #ddd;"
+                                     onerror="this.style.display='none'; document.getElementById('imgError1').style.display='block';">
+                                <p id="imgError1" style="color: red; display: none;">Error loading image from regular path</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <h4>Static URL Path:</h4>
+                                <p style="word-break: break-all;"><small>${staticImageUrl}</small></p>
+                                <img src="${staticImageUrl}" alt="Generated Product Image" 
+                                     style="max-width: 100%; border: 1px solid #ddd;"
+                                     onerror="this.style.display='none'; document.getElementById('imgError2').style.display='block';">
+                                <p id="imgError2" style="color: red; display: none;">Error loading image from static path</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    imageResultDiv.innerHTML = `<p style="color: red;">Error: ${data.status || 'Failed to generate image'}</p>`;
+                }
+            } catch (error) {
+                imageResultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
