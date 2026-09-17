@@ -1,6 +1,6 @@
 # 🚀 Content Generation Platform
 
-A full-stack AI-powered content generation platform built for **Small and Medium Enterprises (SMEs)**. It combines a Python/FastAPI AI backend with a React + Node.js frontend to deliver intelligent product descriptions, marketing strategy recommendations, product trend predictions, AI-generated images, animated GIFs, and text-to-speech audio — all in one place.
+A full-stack AI-powered content generation platform built for **Small and Medium Enterprises (SMEs)**. It combines a Python/FastAPI AI backend with a React + Node.js frontend to deliver intelligent product descriptions, marketing strategy recommendations, product trend predictions, AI-generated images, animated GIFs, and text-to-speech audio all in one place.
 
 ---
 
@@ -221,18 +221,18 @@ python marketing_recommender_cli.py
 
 The marketing strategy recommender uses **content-based filtering with cosine similarity**:
 
-1. **Profile Creation** — Your inputs (industry, budget, hours, goals) form a numerical vector
-2. **Strategy Dataset** — A curated CSV of digital marketing strategies with attributes
-3. **Similarity Scoring** — Cosine similarity between your profile and each strategy
-4. **Ranked Results** — Top-5 strategies filtered by industry & ranked by expected ROI
+1. **Profile Creation**  Your inputs (industry, budget, hours, goals) form a numerical vector
+2. **Strategy Dataset**  A curated CSV of digital marketing strategies with attributes
+3. **Similarity Scoring**  Cosine similarity between your profile and each strategy
+4. **Ranked Results**  Top-5 strategies filtered by industry & ranked by expected ROI
 
 ---
 
 ## 🔒 Security Notes
 
-- **Never commit your `.env` file** — it is included in `.gitignore`
+- **Never commit your `.env` file**  it is included in `.gitignore`
 - Rotate your API keys immediately if they are ever exposed
-- The CORS policy in development allows all origins — restrict this in production
+- The CORS policy in development allows all origins  restrict this in production
 
 ---
 
@@ -248,7 +248,7 @@ The marketing strategy recommender uses **content-based filtering with cosine si
 
 ## 📄 License
 
-This project is licensed under the **ISC License** — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **ISC License**  see the [LICENSE](LICENSE) file for details.
 
 ---
 
