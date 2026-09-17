@@ -59,9 +59,8 @@ if not GEMINI_API_KEY:
 
 if not GEMINI_API_KEY:
     logger.error("GOOGLE_API_KEY not found in environment variables or .env file")
-    # Use a hardcoded key for debugging purposes
-    GEMINI_API_KEY = "AIzaSyCNTLe0l7JqN46i0jUn6tDSTxg7sqwKaPg"
-    logger.info("Using hardcoded API key for debugging purposes")
+    logger.error("Please create a .env file with your GOOGLE_API_KEY. See README.md for instructions.")
+    GEMINI_API_KEY = None
 
 # Initialize the Gemini model
 try:

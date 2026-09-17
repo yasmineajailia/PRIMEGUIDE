@@ -12,14 +12,10 @@ try:
         print("Environment variables loaded from .env file")
     except Exception as e:
         print(f"Warning: Could not load .env file: {e}")
-        print("Setting API keys manually...")
-        # Set API keys manually as fallback
-        os.environ["GOOGLE_API_KEY"] = "AIzaSyCNTLe0l7JqN46i0jUn6tDSTxg7sqwKaPg"
-        os.environ["ELEVENLABS_API_KEY"] = "sk_226ebbc21f2e57a1f0709191bc71e2f0bffd844ad95e83bb"
+        print("Please create a .env file with GOOGLE_API_KEY and ELEVENLABS_API_KEY. See README.md.")
 except ImportError:
-    print("dotenv module not found, setting API keys manually")
-    os.environ["GOOGLE_API_KEY"] = "AIzaSyCNTLe0l7JqN46i0jUn6tDSTxg7sqwKaPg"
-    os.environ["ELEVENLABS_API_KEY"] = "sk_226ebbc21f2e57a1f0709191bc71e2f0bffd844ad95e83bb"
+    print("dotenv module not found. Please install it: pip install python-dotenv")
+    print("Then create a .env file with GOOGLE_API_KEY and ELEVENLABS_API_KEY. See README.md.")
 
 # Configure APIs if keys are available
 try:
